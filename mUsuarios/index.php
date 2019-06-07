@@ -49,7 +49,7 @@ $opcionMenu="A";
 		 ?>
 	</header><!-- /header -->	
 	<div class="container-fluid" >
-		<div class="row">
+	<div class="row" id="cuerpo" style="display:none">
 			<div class="col-xs-0 col-sm-3 col-md-2 col-lg-2 vertical">
 			<?php 
 				include('menuv.php');
@@ -126,7 +126,7 @@ $opcionMenu="A";
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title">Editar datos personas</h4>
+	        <h4 class="modal-title">Editar datos usuarios</h4>
 	      </div>
 	      <div class="modal-body">
 				<input type="hidden" id="idE">
@@ -142,18 +142,6 @@ $opcionMenu="A";
 						<div class="form-group">
 							<label for="usuarioE">Usuario:</label>
 							<input type="text" id="usuarioE" class="form-control " required="" placeholder="Escribe el nombre de usuario">
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-						<div class="form-group">
-							<label for="contraE">Contraseña:</label>
-							<input type="password" id="contraE" class="form-control " required="" placeholder="Escribe la contraseña">
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-						<div class="form-group">
-							<label for="vContraE">Verificar Contraseña:</label>
-							<input type="password" id="vContraE" class="form-control " required="" placeholder="Vuelve a esrcribir la contraseña">
 						</div>
 					</div>
 					<hr class="linea">
@@ -172,6 +160,54 @@ $opcionMenu="A";
 	      </div>
 	    </div>
 		</form>
+	  </div>
+	</div>
+	<!-- Modal -->
+
+	
+			    <!-- Modal content-->
+	  
+	<div id="modalEditarI" class="modal fade" role="dialog">
+	  <div class="modal-dialog modal-md">
+
+	    <form id="frmActulizaI">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Editar la contraseña</h4>
+	      </div>
+	      <div class="modal-body">
+				<input type="hidden" id="idI" value="<?php echo $idUsuario; ?>">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="contraI">Nueva Contraseña:</label>
+							<input type="password" id="contraI" class="form-control " required="" placeholder="Escribe la contraseña">
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+						<div class="form-group">
+							<label for="vContraI">Verificar Contraseña:</label>
+							<input type="password" id="vContraI" class="form-control " required="" placeholder="Vuelve a esrcribir la contraseña">
+						</div>
+					</div>
+					<hr class="linea">
+				</div>
+	      </div>
+	      <div class="modal-footer">
+				<div class="row">
+					<div class="col-lg-12">
+						<button type="button" id="btnCerrar" class="btn btn-login  btn-flat  pull-left" data-dismiss="modal">Cerrar</button>
+						<button type="button" id="btnMostrarI" class="btn btn-login  btn-flat  pull-left" onclick="mostrarContraI()" value="oculto">
+						<i class="far fa-eye fa-lg" id="icoMostrar"></i>
+						</button>
+						<input type="submit" class="btn btn-login  btn-flat  pull-right" value="Actualizar Información">	
+					</div>
+				</div>
+	      </div>
+	    </div>
+		</form>
+
 	  </div>
 	</div>
 	<!-- Modal -->
@@ -215,6 +251,8 @@ $opcionMenu="A";
     <script src="funciones.js"></script>
     <script src="../js/menu.js"></script>
     <script src="../js/precarga.js"></script>
+	<script src="../js/salir.js"></script>
+	<script src="../js/funcion.js"></script>
 
     <!-- LLAMADAS A FUNCIONES E INICIALIZACION DE COMPONENTES -->
 
@@ -237,5 +275,10 @@ $opcionMenu="A";
 	</script>
 
 	<script type="text/javascript" src="../plugins/stacktable/stacktable.js"></script> 
+	<script>
+		window.onload = function() {
+			$("#cuerpo").fadeIn("slow");
+		};	
+	</script>
 </body>
 </html>

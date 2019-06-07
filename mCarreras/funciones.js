@@ -1,6 +1,6 @@
 function llenar_lista(){
      // console.log("Se ha llenado lista");
-    preCarga(1000,4);
+    // preCarga(1000,4);
     $.ajax({
         url:"llenarLista.php",
         type:"POST",
@@ -17,11 +17,10 @@ function llenar_lista(){
 }
 
 function ver_alta(){
-    preCarga(800,4);
+    // preCarga(800,4);
     $("#lista").slideUp('low');
     $("#alta").slideDown('low');
     $("#nombre").focus();
-    $("#abreviatura").focus();
 }
 
 function ver_lista(){
@@ -36,8 +35,8 @@ $('#btnLista').on('click',function(){
 
 $("#frmAlta").submit(function(e){
   
-    var nombre        = $("#nombre").val();
-    var abreviatura   = $("#abreviatura").val();
+    var nombre      = $("#nombre").val();
+    var abreviatura = $("#abreviatura").val();
 
         $.ajax({
             url:"guardar.php",
@@ -45,11 +44,10 @@ $("#frmAlta").submit(function(e){
             dateType:"html",
             data:{
                     'nombre':nombre,
-                    'abreviatura':abreviatura,
-                   
+                    'abreviatura':abreviatura
                  },
             success:function(respuesta){
-              
+              console.log(respuesta);
             alertify.set('notifier','position', 'bottom-right');
             alertify.success('Se ha guardado el registro' );
             $("#frmAlta")[0].reset();
@@ -64,44 +62,35 @@ $("#frmAlta").submit(function(e){
         return false;
 });
 
-function abrirModalEditar(nombre,abreviatura,ide){
-   
-    $("#frmActuliza")[0].reset();
-    $("#nombreE").val(nombre);
-    $("#abreviaturaE").val(abreviatura);
-    $("#idE").val(ide);
 
-    $(".select2").select2();
-
-    $("#modalEditar").modal("show");
-
-     $('#modalEditar').on('shown.bs.modal', function () {
-         $('#nombreE').focus();
-     });   
-}
-
-$("#frmActuliza").submit(function(e){
+$("#frmActualiza").submit(function(e){
+    //SEGUN MI CUADRO DE TEXTO
   
-    var nombre    = $("#nombreE").val();
-    var abreviatura   = $("#abreviaturaE").val();
-    var ide       = $("#idE").val();
+    var nombre      = $("#nombreE").val();
+    var abreviatura = $("#abreviaturaE").val();
+    
+    var id_carrera  = $("#idE").val();
 
+    //VARIABLES DE AJA
         $.ajax({
             url:"actualizar.php",
             type:"POST",
             dateType:"html",
             data:{
+                // 'ID':nombre en la BD
                     'nombre':nombre,
                     'abreviatura':abreviatura,
-                    'ide':ide
+                    'id':id_carrera
                  },
             success:function(respuesta){
-
+              
             alertify.set('notifier','position', 'bottom-right');
             alertify.success('Se ha actualizado el registro' );
-            $("#frmActuliza")[0].reset();
+            $("#frmActualiza")[0].reset();
             $("#modalEditar").modal("hide");
             llenar_lista();
+            //$("#nombre").focus();
+            
             },
             error:function(xhr,status){
                 alert(xhr);
@@ -111,45 +100,86 @@ $("#frmActuliza").submit(function(e){
         return false;
 });
 
-function status(concecutivo,id){
-    var nomToggle   = "#interruptor"+concecutivo;
-    var nomBoton    = "#boton"+concecutivo;
-    var numero      = "#tConsecutivo"+concecutivo;
-    var carrera     = "#tCarrera"+concecutivo;
-    var abreviatura = "#tAbreviatura"+concecutivo;
+function abrirModalEditar(nombre,abreviatura,id){
 
-    if( $(nomToggle).is(':checked') ) {
-        // console.log("activado");
-        var valor=0;
-        alertify.success('Registro habilitado' );
-        $(nomBoton).removeAttr("disabled");
-        $(numero).removeClass("desabilita");
-        $(carrera).removeClass("desabilita");
-        $(abreviatura).removeClass("desabilita");
-    }else{
-        console.log("desactivado");
-        var valor=1;
-        alertify.error('Registro deshabilitado' );
-        $(nomBoton).attr("disabled", "disabled");
-        $(numero).addClass("desabilita");
-        $(carrera).removeClass("desabilita");
-        $(abreviatura).removeClass("desabilita");
+    $("#frmActualiza")[0].reset();
+    $("#nombreE").val(nombre);
+    $("#abreviaturaE").val(abreviatura);
+    $("#idE").val(id);
 
-    }
-    // console.log(concecutivo+' | '+id);
-    $.ajax({
-        url:"status.php",
-        type:"POST",
-        dateType:"html",
-        data:{
-                'valor':valor,
-                'id':id
-             },
-        success:function(respuesta){
-            // console.log(respuesta);
-        },
-        error:function(xhr,status){
-            alert(xhr);
-        },
-    });
+    $(".select2").select2();
+
+    $("#modalEditar").modal("show");
+
+     $('#modalEditar').on('shown.bs.modal', function () {
+         $('#nombreE').focus();
+     });   
 }
+function status(consecutivo,id){
+ //console.log(consecutivo);
+    var nomToggle = "#interruptor"+consecutivo;
+    var nomBoton  = "#boton"+consecutivo;
+    var numero    = "#tConsecutivo"+consecutivo;
+    var carrera    = "#tCarrera"+consecutivo;
+    var abreviatura    = "#tAbreviatura"+consecutivo;
+   
+
+    if ($(nomToggle).is(':checked')) {
+     //console.log("activado");
+     var valor =0;
+     alertify.success('Registro habilitado' );
+     $(nomBoton).removeAttr("disabled");
+     $(numero).removeClass("desabilita");
+     $(carrera).removeClass("desabilita");
+     $(abreviatura).removeClass("desabilita");
+     }else{
+     console.log("desactivado");
+     var valor=1;
+     alertify.error('Registro deshabilitado');
+     $(nomBoton).attr("disabled","disabled");
+     $(numero).addClass("desabilita");
+     $(carrera).addClass("desabilita");
+     $(abreviatura).addClass("desabilita");
+     
+    }
+   // console.log(consecutivo+'|'+valor);
+    $.ajax({
+            url:"status.php",
+            type:"POST",
+            dateType:"html",
+            data:{
+                // VARIABLES DE AJAX'ID':nombre en la BD
+                    'valor':valor,
+                    'id':id
+                 },
+            success:function(respuesta){
+              
+            alertify.set('notifier','position', 'bottom-right');
+            
+            },
+            error:function(xhr,status){
+                alert(xhr);
+            },
+        });
+}
+
+function imprimir(){
+
+    var titular = "Lista de carreras";
+    var mensaje = "¿Deseas generar un archivo con PDF con la lista de carreras activas";
+    // var link    = "pdfListaPersona.php?id="+idPersona+"&datos="+datos;
+    var link    = "pdfListaCarreras.php?";
+
+    alertify.confirm('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
+    alertify.confirm(
+        titular, 
+        mensaje, 
+        function(){ 
+            window.open(link,'_blank');
+            }, 
+        function(){ 
+                alertify.error('Cancelar') ; 
+                // console.log('cancelado')
+              }
+    ).set('labels',{ok:'Generar PDF',cancel:'Cancelar'}); 
+  }

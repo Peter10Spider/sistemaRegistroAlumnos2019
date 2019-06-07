@@ -1,7 +1,7 @@
 /*-------------Inicio Selecciona color-------------*/
 :root {
-	--colorPrimario  : #c0392b;
-	--colorSecundario: #e67e22;
+	--colorPrimario  : #f1c40f;
+	--colorSecundario: #2d3436;
 	--colorTerciario : #fff;
 }
 
@@ -34,7 +34,7 @@ textarea:focus, input:focus, input[type]:focus {
 }
 
 .desabilita{
-	color:#ccc;
+	color:#95a5a6;
 }
 /*-------------Fin General-------------*/
 
@@ -47,10 +47,6 @@ section.iconos ul li a{
 	border-radius: 5px;
 	margin-top   : 2px;
 	color        : var(--colorPrimario);
-}
-
-.centrar{
-	font-weight: bold;
 }
 
 .contenedor{
@@ -78,7 +74,7 @@ p.user {
 	margin-top   : 4px;
 	margin-left  : 4px;
 	margin-right : 4px;
-	color        : var(--colorTerciario);
+	color        : var(--colorSecundario);
 	border-radius: 4px;
 	font-weight  : bolder;
 	display      : block;
@@ -213,7 +209,7 @@ h3{
 .contenido,.titulo{
 	margin-bottom: 10px;
 	height       : 100%;
-	display      : inline-block;
+	display      : block;
 	min-width    : 100%;
 	padding      : 10px;
 	min-height   : 400px;
@@ -281,6 +277,11 @@ body.login{
 	border    :1px solid var(--colorPrimario);
 	color     :var(--colorPrimario);
 }
+.btn-login:focus{
+	background: transparent;
+	border    :1px solid var(--colorPrimario);
+	color     :var(--colorPrimario);
+}
 
 @media (max-width: 768px) {
   .login-box{
@@ -290,3 +291,58 @@ body.login{
 }
 
 /*---------------Fin login---------------*/
+
+/*-----inicio del reloj------------*/
+
+.wrap{
+	width: 90%;
+	max-width: 1000px;
+	/*margin:auto;*/
+	margin-left: auto;
+	margin-right: auto;
+	
+
+}
+
+.widget{
+	width: 100%;
+	margin: 2em;
+	/*margin:32px;*/
+
+}
+
+.widget p{
+	display: inline-block;
+	line-height: 1em;
+}
+
+.fecha{
+	font-family: Oswald, Arial;
+	text-align: center;
+	font-size: 1.5em;
+	margin-bottom: 0.3125rem;
+	background: rgba(47, 54, 64,1.0);
+	padding: 20px;
+	width:100%;
+	color: rgba(251, 197, 49,1.0);
+}
+
+.reloj {
+	font-family: Oswald, Arial;
+	width: 100%;
+	padding: 20px;
+	font-size: 4em;
+	text-align: center;
+	background: rgba(251, 197, 49,1.0);
+
+}
+
+.reloj .caja-segundos{
+	display: inline-block;
+}
+
+.reloj .segundos,
+.reloj .ampm{
+	font-size:2rem;
+	display: block;
+}

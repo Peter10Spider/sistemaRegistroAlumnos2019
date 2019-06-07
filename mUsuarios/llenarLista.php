@@ -7,17 +7,17 @@ mysql_query("SET NAMES utf8");
 
 // Consulta a la base de datos
 $consulta=mysql_query("SELECT
-												id_usuario,
-												id_persona,
-												usuario,
-												activo,
-												(SELECT personas.nombre FROM personas WHERE personas.id_persona=usuarios.id_persona) AS nUsuario,
-												(SELECT personas.ap_paterno FROM personas WHERE personas.id_persona=usuarios.id_persona) AS pUsuario,
-												(SELECT personas.ap_materno FROM personas WHERE personas.id_persona=usuarios.id_persona) AS mUsuario,
-												fecha_registro,
-												contra
-												FROM
-												usuarios",$conexion) or die (mysql_error());
+							id_usuario,
+							id_persona,
+							usuario,
+							activo,
+							(SELECT personas.nombre FROM personas WHERE personas.id_persona=usuarios.id_persona) AS nUsuario,
+							(SELECT personas.ap_paterno FROM personas WHERE personas.id_persona=usuarios.id_persona) AS pUsuario,
+							(SELECT personas.ap_materno FROM personas WHERE personas.id_persona=usuarios.id_persona) AS mUsuario,
+							fecha_registro,
+							contra
+							FROM
+							usuarios",$conexion) or die (mysql_error());
 // $row=mysql_fetch_row($consulta)
  ?>
 				            <div class="table-responsive">
@@ -29,9 +29,9 @@ $consulta=mysql_query("SELECT
 				                        <th>Nombre</th>
 				                        <th>Usuario</th>
 				                        <th>Registro</th>
-																<th>Restaurar</th>
+										<th>Restaurar</th>
 				                        <th>Editar</th>
-																<th>Estatus</th>
+										<th>Estatus</th>
 				                      </tr>
 				                    </thead>
 
@@ -58,35 +58,32 @@ $consulta=mysql_query("SELECT
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tNcompleto".$n; ?>" class="<?php echo $claseDesabilita; ?>">
+												<p id="<?php echo "tNcompleto".$n; ?>" class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo $nomUsuarioCompleto; ?>
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tUsuario".$n; ?>" class="<?php echo $claseDesabilita; ?>">
+												<p id="<?php echo "tUsuario".$n; ?>" class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo $usuario; ?>
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tRegistro".$n; ?>"  class="<?php echo $claseDesabilita; ?>">
+												<p id="<?php echo "tRegistro".$n; ?>"  class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo $registro; ?>
 				                          </p>
 				                        </td>	
 				                        <td>
-				                          <button id="<?php echo "botonR".$n; ?>" <?php echo $desabilitar ?>  type="button" class="btn btn-login btn-sm" 
-				                          onclick="restaurarContra(
-				                          							'<?php echo $idUsuario ?>'
-				                          							);">
+				                          <button id="<?php echo "botonR".$n; ?>" <?php echo $desabilitar ?>  type="button" class="btn btn-login btn-sm" onclick="restaurarContra('<?php echo $idUsuario ?>');">
 				                          	<i class="fas fa-sync-alt"></i>
 				                          </button>
 				                        </td>
 				                        <td>
 				                          <button id="<?php echo "boton".$n; ?>" <?php echo $desabilitar ?>  type="button" class="btn btn-login btn-sm" 
 				                          onclick="abrirModalEditar(
-				                          							'<?php echo $idUsuario  ?>',
-				                          							'<?php echo $idPersona ?>',
-				                          							'<?php echo $usuario ?>',
-				                          							'<?php echo $contra ?>'
+				                          					'<?php echo $idUsuario  ?>',
+				                          					'<?php echo $idPersona ?>',
+				                          					'<?php echo $usuario ?>',
+				                         					'<?php echo $contra ?>'
 				                          							);">
 				                          	<i class="far fa-edit"></i>
 				                          </button>
@@ -157,8 +154,8 @@ $consulta=mysql_query("SELECT
                          {
                               text: 'Nuevo Usuario',
                               action: function (  ) {
-							ver_alta();
-							llenar_persona();
+																			ver_alta();
+																			llenar_persona();
                               },
                               counter: 1
                           },

@@ -1,6 +1,7 @@
 <?php
 //se manda llamar la conexion
 include("../conexion/conexion.php");
+
 $nombre    = $_POST["nombre"];
 $paterno   = $_POST["paterno"];
 $materno   = $_POST["materno"];
@@ -10,6 +11,7 @@ $correo    = $_POST["correo"];
 $tipo      = $_POST["tipo"];
 $sexo      = $_POST["sexo"];
 $ide       = $_POST["ide"];
+
 $nombre    =trim($nombre);
 $paterno   =trim($paterno);
 $materno   =trim($materno);
@@ -18,8 +20,10 @@ $telefono  =trim($telefono);
 $correo    =trim($correo);
 $tipo      =trim($tipo);
 $sexo      =trim($sexo);
+
 $fecha=date("Y-m-d"); 
 $hora=date ("H:i:s");
+
 mysql_query("SET NAMES utf8");
  $insertar = mysql_query("UPDATE personas SET
 							nombre='$nombre',
@@ -36,4 +40,5 @@ mysql_query("SET NAMES utf8");
 							id_registro='1'
 						WHERE id_persona='$ide'
 							 ",$conexion)or die(mysql_error());
+
 ?>

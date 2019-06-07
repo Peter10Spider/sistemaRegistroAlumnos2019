@@ -1,24 +1,21 @@
 <?php 
 // Conexion a la base de datos
 include'../conexion/conexion.php';
-
 // Codificacion de lenguaje
 mysql_query("SET NAMES utf8");
-
 // Consulta a la base de datos
-$consulta=mysql_query("SELECT
-							id_alumno,
-							no_control,
-							id_persona,
-							id_carrera,
-							activo,
-							(SELECT personas.nombre FROM personas WHERE personas.id_persona=alumnos.id_persona) AS nUsuario,
-							(SELECT personas.ap_paterno FROM personas WHERE personas.id_persona=alumnos.id_persona) AS pUsuario,
-							(SELECT personas.ap_materno FROM personas WHERE personas.id_persona=alumnos.id_persona) AS mUsuario,
-							(SELECT carreras.nombre FROM carreras WHERE carreras.id_carrera=alumnos.id_carrera) AS nCarrera,
-							fecha_registro
-							FROM
-						    alumnos",$conexion) or die (mysql_error());
+$consulta=mysql_query("SELECT 
+					   id_alumno,
+					   id_persona,
+					   id_carrera,
+					   no_control,
+					   activo,
+					   (SELECT personas.nombre FROM personas WHERE personas.id_persona=alumnos.id_persona) AS nAlumno,
+					   (SELECT personas.ap_paterno FROM personas WHERE personas.id_persona=alumnos.id_persona) AS pAlumno,
+					   (SELECT personas.ap_materno FROM personas WHERE personas.id_persona=alumnos.id_persona) AS mAlumno,
+					   (SELECT carreras.nombre FROM carreras WHERE carreras.id_carrera=alumnos.id_carrera) AS Carrera,
+					   fecha_registro
+					   FROM alumnos",$conexion) or die (mysql_error());
 // $row=mysql_fetch_row($consulta)
  ?>
 				            <div class="table-responsive">
@@ -27,12 +24,11 @@ $consulta=mysql_query("SELECT
 				                    <thead align="center">
 				                      <tr class="info" >
 				                        <th>#</th>
-				                        <th>Número de control</th>
-				                        <th>Alumno</th>
+				                        <th>No_Control</th>
+				                        <th>Nombre</th>
 				                        <th>Carrera</th>
-				                        <th>Registro</th>
 				                        <th>Editar</th>
-										<th>Estatus</th>
+				                        <th>Estatus</th>
 				                      </tr>
 				                    </thead>
 
@@ -40,59 +36,53 @@ $consulta=mysql_query("SELECT
 				                    <?php 
 				                    $n=1;
 				                    while ($row=mysql_fetch_row($consulta)) {
-										$idAlumno           = $row[0];
-										$activo             = $row[4];
-										$nomUsuarioCompleto = $row[6].' '.$row[7].' '.$row[5];
-										$iPersona           = $row[2];
-										$nomControl         = $row[1];
-										$carrera            = $row[8];
-										$idCarrera          = $row[3];
-										$registro           = $row[9];
-
-										$checado         = ($activo == 1)?'checked' : '';		
-										$desabilitar     = ($activo == 0)?'disabled': '';
-										$claseDesabilita = ($activo == 0)?'desabilita':'';
-															?>
+										$idAlumno          = $row[0];
+										$nomCarrera        = $row[8];
+										$activo            = $row[4];
+										$nomAlumnoCompleto = $row[6].' '.$row[7].' '.$row[5];
+										$idPersona         = $row[1];
+										$idCarrera         = $row[2]; 
+										$noControl         = $row[3];
+										$registro          = $row[9];
+										$checado           = ($activo == 1)?'checked' : '';		
+										$desabilitar       = ($activo == 0)?'disabled': '';
+										$claseDesabilita   = ($activo == 0)?'desabilita':'';
+										?>
 				                      <tr>
 				                        <td >
 				                          <p id="<?php echo "tConsecutivo".$n; ?>" class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo "$n"; ?>
 				                          </p>
 				                        </td>
-				                         <td>
-											<p id="<?php echo "tNControl".$n; ?>" class="<?php echo $claseDesabilita; ?>">
-				                          	<?php echo $nomControl; ?>
+				                        <td>
+										   <p id="<?php echo "tNoControl".$n; ?>" class="<?php echo $claseDesabilita; ?>">
+				                          	<?php echo $noControl; ?>
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tNcompleto".$n; ?>" class="<?php echo $claseDesabilita; ?>">
-				                          	<?php echo $nomUsuarioCompleto; ?>
+										   <p id="<?php echo "tnomAlumnoCompleto".$n; ?>" class="<?php echo $claseDesabilita; ?>">
+				                          	<?php echo $nomAlumnoCompleto; ?>
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tCarrera".$n; ?>" class="<?php echo $claseDesabilita; ?>">
-				                          	<?php echo $carrera; ?>
-				                          </p>
-				                        </td>
-				                        <td>
-											<p id="<?php echo "tRegistro".$n; ?>"  class="<?php echo $claseDesabilita; ?>">
-				                          	<?php echo $registro; ?>
+										   <p id="<?php echo "tnomCarrera".$n; ?>"  class="<?php echo $claseDesabilita; ?>">
+				                          	<?php echo $nomCarrera; ?>
 				                          </p>
 				                        </td>	
 				                        <td>
-
 				                          <button id="<?php echo "boton".$n; ?>" <?php echo $desabilitar ?>  type="button" class="btn btn-login btn-sm" 
 				                          onclick="abrirModalEditar(
-				   
-										  '<?php echo $Ncontrol ?>',
-										  '<?php echo $idPersona ?>',
-										  '<?php echo $idCarrera ?>'
+				                          							'<?php echo $idAlumno ?>',
+				                          							'<?php echo $idPersona ?>',
+				                          							'<?php echo $idCarrera ?>',
+				                          							'<?php echo $noControl ?>'
 				                          							);">
 				                          	<i class="far fa-edit"></i>
 				                          </button>
 				                        </td>
 				                        <td>
-											<input  data-size="small" data-style="android" value="<?php echo "$valor"; ?>" type="checkbox" <?php echo "$checado"; ?>  id="<?php echo "interruptor".$n; ?>"  data-toggle="toggle" data-on="Desactivar" data-off="Activar" data-onstyle="danger" data-offstyle="success" class="interruptor" data-width="100" onchange="status(<?php echo $n; ?>,<?php echo $idAlumno; ?>);">
+ 
+											<input data-size="small" data-style="android" value="<?php echo "$valor"; ?>" type="checkbox" <?php echo "$checado"; ?>  id="<?php echo "interruptor".$n; ?>"  data-toggle="toggle" data-on="Desactivar" data-off="Activar" data-onstyle="danger" data-offstyle="success" class="interruptor" data-width="100" onchange="status(<?php echo $n; ?>,<?php echo $idAlumno; ?>);">
 				                        </td>
 				                      </tr>
 				                      <?php
@@ -105,12 +95,11 @@ $consulta=mysql_query("SELECT
 				                    <tfoot align="center">
 				                      <tr class="info">
 										<th>#</th>
-				                        <th>Número de control</th>
-				                        <th>Alumno</th>
+				                        <th>No_Control</th>
+				                        <th>Nombre</th>
 				                        <th>Carrera</th>
-				                        <th>Registro</th>
 				                        <th>Editar</th>
-										<th>Estatus</th>
+				                        <th>Estatus</th>
 				                      </tr>
 				                    </tfoot>
 				                </table>
@@ -158,19 +147,16 @@ $consulta=mysql_query("SELECT
                               text: 'Nuevo Alumno',
                               action: function (  ) {
 							  ver_alta();
-					          llenar_persona();
-					          llenar_carrera();
+							  llenar_persona();
+							  llenar_carrera();
                               },
                               counter: 1
                           },
                   ]
               } );
           } );
-
       </script>
       <script>
             $(".interruptor").bootstrapToggle('destroy');
             $(".interruptor").bootstrapToggle();
       </script>
-    
-    

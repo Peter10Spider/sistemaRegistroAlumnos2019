@@ -1,6 +1,6 @@
 function llenar_lista(){
      // console.log("Se ha llenado lista");
-    preCarga(1000,4);
+    // preCarga(1000,4);
     $.ajax({
         url:"llenarLista.php",
         type:"POST",
@@ -13,11 +13,11 @@ function llenar_lista(){
         error:function(xhr,status){
             alert("no se muestra");
         }
-    });	
+    }); 
 }
 
 function ver_alta(){
-    preCarga(800,4);
+    // preCarga(800,4);
     $("#lista").slideUp('low');
     $("#alta").slideDown('low');
     $("#nombre").focus();
@@ -34,12 +34,23 @@ $('#btnLista').on('click',function(){
 });
 
 $("#frmAlta").submit(function(e){
-  
+    
+    var noControl = $("#noControl").val();
     var idPersona = $("#idPersona").val();
-    var Ncontrol   = $("#Ncontrol").val();
-    var idCarrera  = $("#idCarrera").val();
+    var idCarrera = $("#idCarrera").val();
+    //Validaciones
+    if(noControl.length<5){
+        alertify.dialog('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
 
-    // validacion para no meter id de persona en 0
+        alertify.alert()
+        .setting({
+            'title':'Información',
+            'label':'Salir',
+            'message': 'El numero de control debe contener al menos 5 caracteres.' ,
+            'onok': function(){ alertify.message('Gracias !');}
+        }).show();
+        return false;       
+    }
     if(idPersona==0){
         alertify.dialog('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
 
@@ -52,27 +63,28 @@ $("#frmAlta").submit(function(e){
         }).show();
         return false;       
     }
-    
-     // validacion para no meter id de carrera en 0
-     if(idCarrera==0){
+    if(idCarrera==0){
         alertify.dialog('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
 
         alertify.alert()
         .setting({
             'title':'Información',
             'label':'Salir',
-            'message': 'Debes seleccionar el dato de una carrera.' ,
+            'message': 'Debes seleccionar una carrera.' ,
             'onok': function(){ alertify.message('Gracias !');}
         }).show();
         return false;       
     }
+    
+    // console.log(nombreCompleto);
+
         $.ajax({
             url:"guardar.php",
             type:"POST",
             dateType:"html",
             data:{
+                    'noControl':noControl,
                     'idPersona':idPersona,
-                    'Ncontrol':Ncontrol,
                     'idCarrera':idCarrera
                  },
             success:function(respuesta){
@@ -91,42 +103,75 @@ $("#frmAlta").submit(function(e){
         return false;
 });
 
-function abrirModalEditar(nomControl,idCarrera,idAlumno){
+function abrirModalEditar(idAlumno,idPersona,idCarrera,no_control){
    
-    $("#frmActuliza")[0].reset();
-    $("#NcontrolE").val(nomControl);
-    $("#idCarreraE").val(idCarrera);
-    $("#idE").val(idAlumno);
+   $("#frmActualiza")[0].reset();
 
-    $(".select2").select2();
+    llenar_personaA(idPersona);
+    llenar_carreraA(idCarrera);
+
+    $("#idE").val(idAlumno);
+    //$("#nombreE").val(idPersona);
+    //$("#idPersonaE").val(idPersona);
+    //$("#idCarreraE").val(idCarrera);
+    $("#noControlE").val(no_control);
 
     $("#modalEditar").modal("show");
 
      $('#modalEditar').on('shown.bs.modal', function () {
-         $('#NcontrolE').focus();
+         $('#noControlE').focus();
      });   
 }
 
-$("#frmActuliza").submit(function(e){
+$("#frmActualiza").submit(function(e){
   
-    var nomControl  = $("#NcontrolE").val();
-    var idCarrera   = $("#idCarreraE").val();
-    var ide         = $("#idE").val();
+    var noControl = $("#noControlE").val();
+    var idCarrera = $("#carreraE").val();
+    var ide       = $("#idE").val();
+    
+    //Validaciones
+
+    if(noControl.length<5){
+        alertify.dialog('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
+
+        alertify.alert()
+        .setting({
+            'title':'Información',
+            'label':'Salir',
+            'message': 'El numero de control debe contener al menos 5 caracteres.' ,
+            'onok': function(){ alertify.message('Gracias !');}
+        }).show();
+        return false;       
+    }
+
+    if(idCarrera==0){
+        alertify.dialog('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
+
+        alertify.alert()
+        .setting({
+            'title':'Información',
+            'label':'Salir',
+            'message': 'Debes seleccionar una carrera.' ,
+            'onok': function(){ alertify.message('Gracias !');}
+        }).show();
+        $("#contra").focus();
+        return false;       
+    }
 
         $.ajax({
             url:"actualizar.php",
             type:"POST",
             dateType:"html",
             data:{
-                    'Ncontrol': nomControl,
-                    'idCarrera': idCarrera,
+                    'noControl':noControl,
+                    'idCarrera':idCarrera,
                     'ide':ide
                  },
             success:function(respuesta){
 
             alertify.set('notifier','position', 'bottom-right');
             alertify.success('Se ha actualizado el registro' );
-            $("#frmActuliza")[0].reset();
+            $("#frmActualiza")[0].reset();
             $("#modalEditar").modal("hide");
             llenar_lista();
             },
@@ -139,12 +184,12 @@ $("#frmActuliza").submit(function(e){
 });
 
 function status(concecutivo,id){
-    var nomToggle = "#interruptor"+concecutivo;
-    var nomBoton  = "#boton"+concecutivo;
-    var numero    = "#tConsecutivo"+concecutivo;
-    var nCompleto = "#tNcompleto"+concecutivo;
-    var usuario   = "#tUsuario"+concecutivo;
-    var registro  = "#tRegistro"+concecutivo;
+    var nomToggle          = "#interruptor"+concecutivo;
+    var nomBoton           = "#boton"+concecutivo;
+    var numero             = "#tConsecutivo"+concecutivo;
+    var tNoControl         = "#tNoControl"+concecutivo;
+    var tnomAlumnoCompleto = "#tnomAlumnoCompleto"+concecutivo;
+    var tnomCarrera        = "#tnomCarrera"+concecutivo;
 
     if( $(nomToggle).is(':checked') ) {
         // console.log("activado");
@@ -152,9 +197,9 @@ function status(concecutivo,id){
         alertify.success('Registro habilitado' );
         $(nomBoton).removeAttr("disabled");
         $(numero).removeClass("desabilita");
-        $(nCompleto).removeClass("desabilita");
-        $(usuario).removeClass("desabilita");
-        $(registro).removeClass("desabilita");
+        $(tNoControl).removeClass("desabilita");
+        $(tnomAlumnoCompleto).removeClass("desabilita");
+        $(tnomCarrera).removeClass("desabilita");
 
     }else{
         // console.log("desactivado");
@@ -162,9 +207,9 @@ function status(concecutivo,id){
         alertify.error('Registro deshabilitado' );
         $(nomBoton).attr("disabled", "disabled");
         $(numero).addClass("desabilita");
-        $(nCompleto).addClass("desabilita");
-        $(usuario).addClass("desabilita");
-        $(registro).addClass("desabilita");
+        $(tNoControl).addClass("desabilita");
+        $(tnomAlumnoCompleto).addClass("desabilita");
+        $(tnomCarrera).addClass("desabilita");
 
     }
     // console.log(concecutivo+' | '+id);
@@ -206,8 +251,8 @@ function llenar_persona()
 
 function llenar_carrera()
 {
-     // alert(idRepre);
-     $.ajax({
+    // alert(idRepre);
+    $.ajax({
         url : 'comboCarreras.php',
         // data : {'id':id},
         type : 'POST',
@@ -220,5 +265,66 @@ function llenar_carrera()
             alert('Disculpe, existió un problema');
         },
     });
-
 }
+function llenar_personaA(idPersona)
+{
+    // alert(idRepre);
+    $.ajax({
+        url : 'comboPersonasA.php',
+        // data : {'id':id},
+        type : 'POST',
+        dataType : 'html',
+        success : function(respuesta) {
+            $("#nombreE").empty();
+            $("#nombreE").html(respuesta);  
+            $("#nombreE").val(idPersona);
+            $(".select2").select2();
+
+        },
+        error : function(xhr, status) {
+            alert('Disculpe, existió un problema');
+        },
+    });
+}
+
+function llenar_carreraA(idCarrera)
+{
+    // alert(idRepre);
+    $.ajax({
+        url : 'comboCarrerasA.php',
+        // data : {'id':id},
+        type : 'POST',
+        dataType : 'html',
+        success : function(respuesta) {
+            $("#carreraE").empty();
+            $("#carreraE").html(respuesta);  
+            $("#carreraE").val(idCarrera);
+            $(".select2").select2();
+
+        },
+        error : function(xhr, status) {
+            alert('Disculpe, existió un problema');
+        },
+    });
+}
+
+function imprimir(){
+
+    var titular = "Lista de personas";
+    var mensaje = "¿Deseas generar un archivo con PDF con la lista de alumnos activos";
+    // var link    = "pdfListaPersona.php?id="+idPersona+"&datos="+datos;
+    var link    = "pdfListaAlumnos.php?";
+
+    alertify.confirm('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
+    alertify.confirm(
+        titular, 
+        mensaje, 
+        function(){ 
+            window.open(link,'_blank');
+            }, 
+        function(){ 
+                alertify.error('Cancelar') ; 
+                // console.log('cancelado')
+              }
+    ).set('labels',{ok:'Generar PDF',cancel:'Cancelar'}); 
+  }

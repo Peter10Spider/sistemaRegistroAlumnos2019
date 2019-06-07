@@ -1,8 +1,10 @@
 <?php 
 // Conexion a la base de datos
 include'../conexion/conexion.php';
+
 // Codificacion de lenguaje
 mysql_query("SET NAMES utf8");
+
 // Consulta a la base de datos
 $consulta=mysql_query("SELECT
 							id_persona,
@@ -18,7 +20,7 @@ $consulta=mysql_query("SELECT
 							ap_paterno,
 							ap_materno
 						FROM
-							personas",$conexion) or die (mysql_error());
+							personas ORDER BY id_persona DESC",$conexion) or die (mysql_error());
 // $row=mysql_fetch_row($consulta)
  ?>
 				            <div class="table-responsive">
@@ -70,7 +72,7 @@ $consulta=mysql_query("SELECT
 				                          </p>
 				                        </td>
 				                        <td>
-											<p id="<?php echo "tCorreo".$n; ?>" class="<?php echo $claseDesabilita; ?>">
+										    <p id="<?php echo "tCorreo".$n; ?>" class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo $correo; ?>
 				                          </p>
 				                        </td>
@@ -83,6 +85,7 @@ $consulta=mysql_query("SELECT
 											<p id="<?php echo "tSexo".$n; ?>" class="<?php echo $claseDesabilita; ?>">
 				                          	<?php echo $sexo; ?>
 				                          </p>	
+										</td>
 				                        <td>
 				                          <button id="<?php echo "boton".$n; ?>" <?php echo $desabilitar ?>  type="button" class="btn btn-login btn-sm" 
 				                          onclick="abrirModalEditar(
@@ -93,9 +96,9 @@ $consulta=mysql_query("SELECT
 				                          							'<?php echo $telefono ?>',
 				                          							'<?php echo $fecha_nac ?>',
 				                          							'<?php echo $correo ?>',
-																	'<?php echo $tipoPersona ?>',
-																	'<?php echo $genero ?>',
-																	'<?php echo $idPersona ?>'
+											'<?php echo $tipoPersona ?>',
+										    '<?php echo $genero ?>',
+											'<?php echo $idPersona ?>'
 				                          							);">
 				                          	<i class="far fa-edit"></i>
 				                          </button>
@@ -173,8 +176,11 @@ $consulta=mysql_query("SELECT
                   ]
               } );
           } );
+
       </script>
       <script>
             $(".interruptor").bootstrapToggle('destroy');
             $(".interruptor").bootstrapToggle();
       </script>
+    
+    

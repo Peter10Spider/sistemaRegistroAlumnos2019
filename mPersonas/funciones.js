@@ -1,6 +1,6 @@
 function llenar_lista(){
      // console.log("Se ha llenado lista");
-    preCarga(1000,4);
+    // preCarga(1000,4);
     $.ajax({
         url:"llenarLista.php",
         type:"POST",
@@ -13,11 +13,11 @@ function llenar_lista(){
         error:function(xhr,status){
             alert("no se muestra");
         }
-    }); 
+    });	
 }
 
 function ver_alta(){
-    preCarga(800,4);
+    // preCarga(800,4);
     $("#lista").slideUp('low');
     $("#alta").slideDown('low');
     $("#nombre").focus();
@@ -191,3 +191,24 @@ function status(concecutivo,id){
         },
     });
 }
+
+function imprimir(){
+
+    var titular = "Lista de personas";
+    var mensaje = "¿Deseas generar un archivo con PDF con la lista de personas activas";
+    // var link    = "pdfListaPersona.php?id="+idPersona+"&datos="+datos;
+    var link    = "pdfListaPersona.php?";
+
+    alertify.confirm('alert').set({transition:'zoom',message: 'Transition effect: zoom'}).show();
+    alertify.confirm(
+        titular, 
+        mensaje, 
+        function(){ 
+            window.open(link,'_blank');
+            }, 
+        function(){ 
+                alertify.error('Cancelar') ; 
+                // console.log('cancelado')
+              }
+    ).set('labels',{ok:'Generar PDF',cancel:'Cancelar'}); 
+  }
